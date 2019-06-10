@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<html>
+	<header>
+		<title>Twitt! - Main</title>
+
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	</header>
+
+	<body>
+
+	<!-- this is the navbar, it contains nav stuff-->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+		  <a class="navbar-brand" href="#">TWITTS!</a>
+
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+
+		  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="navbar-nav">
+
+			  <li class="nav-item active">
+				<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+			  </li>
+
+			  <li class="nav-item">
+				<a class="nav-link" href="#">API List</a>
+			  </li>
+
+			  <li class="nav-item dropdown" align="right">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{{ username }} - document.getElementById("status")
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+					<button class="dropdown-item" id="online-button"><img src="../static/images/online.png" alt="online" /> Online</button>
+					<button class="dropdown-item" id="away-button"><img src="../static/images/away.png" alt="away" /> Away</button>
+					<button class="dropdown-item" id="busy-button"><img src="../static/images/busy.png" alt="busy" /> Busy</button>
+					<button class="dropdown-item" id="offline-button"><img src="../static/images/offline.png" alt="offline" /> Offline</button>
+					<div class="dropdown-divider"></div>
+					<center></center><a href="/signout">Logout</a></div><center>
+				</div>
+			  </li>
+
+			</ul>
+		  </div>
+		</nav>
+
+
+		<div class="container-fluid" style="min-height:100vh; max-height:100vh;">
+			<div class="row">
+				<div class="col-lg-9" id="left" style="height:100vh;">
+					<!--Tabs Manager-->
+					<ul class="nav nav-tabs" id="MessageTab" role="tablist">
+					  <li class="nav-item" id="switch-button">
+						<a class="nav-link active" id="broadcast-tab" data-toggle="tab" href="#broadcast" role="tab" aria-controls="broadcast" aria-selected="true">Public Broadcast</a>
+					  </li>
+					  <li class="nav-item" id="switch-button">
+						<a class="nav-link" id="private-tab" data-toggle="tab" href="#private" role="tab" aria-controls="private" aria-selected="false">Private Message</a>
+					  </li>
+					</ul>
+
+					<!--Broadcast Message Tab-->
+					<div class="tab-pane fade" id="broadcast" role="tabpanel" aria-labelledby="broadcast-tab">
+						<div style="max-height:75vh;overflow:auto">
+							<div  id="msg-list">
+								{% for i in msguser %}
+								<div class="card">
+								  <div class="card-header">
+									{{ msguser[i] }}
+								  </div>
+								  <div class="card-body">
+									<blockquote class="blockquote mb-0">
+									  <p>{{ msg[i] }}</p>
+									  <footer class="blockquote-footer">{{ msgtime[i] }}, <cite title="Source Title">{{ msgpubkey[i] }}</cite></footer>
+									</blockquote>
+								  </div>
+								</div>
+								{% endfor %}
+							</div>
+						</div>
+						<div>
+							<div class="input-group">
+							  <div class="input-group-prepend">
+								<button type="submit" value="send" id="send-broadcast" class="btn btn-outline-secondary">Send</button>
+								  <span class="sr-only">Toggle Dropdown</span>
+								</button>
+							  </div>
+							  <input type="text" class="form-control" name="message" placeholder="Message" aria-label="Text input with segmented dropdown button">
+							</div>
+						</div>
+					</div>
+
+					<!--Private Message Tab-->
+					<div class="tab-pane fade" id="private" role="tabpanel" aria-labelledby="private-tab">
+						<div style="max-height:75vh;overflow:auto">
+							<div  id="pr-msg-list">
+								<p>Test message thingy</p>
+							</div>
+						</div>
+						<div>
+							<div class="input-group">
+							  <div class="input-group-prepend">
+								<button type="submit" value="send" id="send-private-message" class="btn btn-outline-secondary">Send</button>
+								  <span class="sr-only">Toggle Dropdown</span>
+								</button>
+							  </div>
+							  <input type="text" class="form-control" id="prmsg"name="message" placeholder="Message" aria-label="Text input with segmented dropdown button">
+							  <div class="input-group-prepend">
+								<span class="input-group-text">Username</span>
+							  </div>
+							  <input type="text" class="form-control" id="pruser">
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+
+				
+				<div class="col-lg-3" style="max-height:90vh; overflow:auto;">
+					<ul class="list-group list-group" id="user-list">
+						{% for i in users %}
+							<li class="list-group-item list-group-item-action">
+								<center>
+								<a class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									{{ users[i] }} - {{ statuslist[i] }}
+								</a>
+								</center>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+								  <a class="dropdown-item" href="#">Send Private Message</a>
+								  <div class="dropdown-divider"></div>
+								  <a class="dropdown-item" href="#">Add Friend</a>
+								  <a class="dropdown-item" href="#">Add Signature</a>
+								  <a class="dropdown-item" href="#">Block Signature</a>
+								  <a class="dropdown-item" href="#">Block PubKey</a>
+								  <a class="dropdown-item" href="#">Block User</a>
+								</div>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+		<script src="static/serverscripts.js"></script>
+	
+	</body>
+</html>
+
+            
+            
